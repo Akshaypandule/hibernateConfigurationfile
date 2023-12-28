@@ -1,0 +1,11 @@
+@ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String,String>> handleMethodArgNotValidException(MethodArgumentNotValidException ex){
+        Map<String,String> resp=new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error)->{
+            String field = ((FieldError) error).getField();
+            String defaultMessage = error.getDefaultMessage();
+
+            resp.put(field,defaultMessage);
+        });
+        return new ResponseEntity<Map<String,String>>(resp,HttpStatus.BAD_REQUEST);
+    }
